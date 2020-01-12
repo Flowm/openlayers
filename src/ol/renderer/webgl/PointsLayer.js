@@ -290,6 +290,7 @@ class WebGLPointsLayerRenderer extends WebGLLayerRenderer {
     this.sourceListenKeys_ = [
       listen(source, VectorEventType.ADDFEATURE, this.handleSourceFeatureAdded_, this),
       listen(source, VectorEventType.CHANGEFEATURE, this.handleSourceFeatureChanged_, this),
+      listen(source, VectorEventType.CLEAR, this.handleSourceFeatureClear_, this),
       listen(source, VectorEventType.REMOVEFEATURE, this.handleSourceFeatureDelete_, this)
     ];
     source.forEachFeature(function(feature) {
@@ -327,6 +328,15 @@ class WebGLPointsLayerRenderer extends WebGLLayerRenderer {
       properties: feature.getProperties(),
       geometry: feature.getGeometry()
     };
+  }
+
+  /**
+   * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
+   * @private
+   */
+  handleSourceFeatureClear_(event) {
+    this.featureCache_ = {};
+    this.featureCount_ = 0;
   }
 
   /**
